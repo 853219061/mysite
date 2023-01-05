@@ -1,28 +1,66 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="app-container">
+    <Layout>
+      <template #left>
+        <SiteAside></SiteAside>
+      </template>
+      <template>
+        <RouterView />
+      </template>
+    </Layout>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import SiteAside from './components/SiteAside'
+import Layout from './components/Layout'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    SiteAside,
+    Layout,
+},
+  methods: {
+    handleLoaded() {
+      console.log(' load 事件触发 图片加载完成')
+    }
+  },
+  data() {
+    return {
+
+    }
+  },
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang="less" >
+@import '~@/styles/mixin.less';
+
+.app-container {
+  .self-fill();
+ 
+  .layout-container .left {
+    width: 250px;
+    height: 100%;
+    background-color: lightcoral;
+  }
+
+  .layout-container .main {
+    width: 100%;
+    height: 100%;
+    background-color: lightgreen;
+
+  }
+
+
+
+
+}
+
+
+#app .iconfont {
+  // font-size: 60px;
+  //color: red;
 }
 </style>
