@@ -1,7 +1,7 @@
 <template>
     <div class="site-aside-container">
         <div class="avatar-container">
-            <Avatar :size="100" url="https://pic3.zhimg.com/v2-58d652598269710fa67ec8d1c88d8f03_r.jpg?source=1940ef5c">
+            <Avatar :size="100" url="https://img1.baidu.com/it/u=3346088927,2424311409&fm=253&fmt=auto&app=120&f=JPEG?w=1280&h=800">
             </Avatar>
         </div>
         <h1 class="title">龙傲天的小屋</h1>

@@ -43,13 +43,13 @@ export default {
   .layout-container .left {
     width: 250px;
     height: 100%;
-    background-color: lightcoral;
+    // background-color: lightcoral;
   }
 
   .layout-container .main {
     width: 100%;
     height: 100%;
-    background-color: lightgreen;
+    // background-color: lightgreen;
 
   }
 
