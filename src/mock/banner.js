@@ -1,7 +1,7 @@
 import Mock from 'mockjs';
 
 Mock.mock("/api/banner", 'get', {
-    code: 406, // 0 无错误  406 验证失败  500 服务器内部错误
+    code: 0, // 0 无错误  406 验证失败  500 服务器内部错误
     msg: "验证失败",
     data: [
         {

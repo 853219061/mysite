@@ -26,6 +26,6 @@ export default {
 
 <style scoped>
 /*  注意这里 不能用less 因为要引入 css */
-@import  '//at.alicdn.com/t/c/font_3593206_jjjxrpavu9k.css';
+@import  '//at.alicdn.com/t/c/font_3593206_f9tjolrrdw.css';
 /* @import "//at.alicdn.com/t/c/font_3593206_e6a0da7jihc.css"; */
 </style>

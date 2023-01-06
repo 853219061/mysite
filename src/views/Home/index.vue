@@ -1,15 +1,42 @@
 <template>
   <div class="home-container" ref="container">
-    <h1>首页</h1>
-    <button @click="handleClick">点击我</button>
+    <ul class="carousel-container" :style="{ marginTop: marginTop }">
+      <li v-for="(item) in banners" :key="item.id">
+        <CarouselItem></CarouselItem>
+      </li>
+    </ul>
+    <div v-show="index > 0" class="iconwrap iconwrap-up" @click="switchTo(index - 1)">
+      <Icon type="icon-up"></Icon>
+    </div>
+
+    <div v-show="index < banners.length - 1" class="iconwrap iconwrap-down" @click="switchTo(index + 1)">
+      <Icon type="icon-down"></Icon>
+    </div>
+
+    <ul class="indicator">
+      <li @click="switchTo(i)" v-for="(item, i) in banners" :class="{ active: index === i }" :key="item.id">
+      </li>
+    </ul>
+
   </div>
 </template>
 <script>
-
+import CarouselItem from './carouselitem.vue';
+import { getBanner } from '@/api/banner';
+import Icon from '@/components/Icon.vue';
 export default {
   name: 'APP',
+  components: { CarouselItem, Icon },
   data() {
     return {
+      banners: [],
+      index: 1, // 当前显示的第几张
+      containerHeight: 0// 容器高度
+    }
+  },
+  computed: {
+    marginTop() {
+      return - (this.index * this.containerHeight) + 'px';
     }
   },
   methods: {
@@ -20,22 +47,150 @@ export default {
         type: "success",
         duration: 2000,
         container: this.$refs.container,
-        callback: ()=>{ console.log('消失')}
+        callback: () => { console.log('消失') }
       })
+    },
+    switchTo(i) {
+      this.index = i;
     }
 
   },
-  created() {
+  async created() {
+    this.banners = await getBanner();
+    console.log('获取数据', this.banners)
   },
   mounted() {
+
+    // 容器高度获取
+    this.containerHeight = this.$refs.container.clientHeight
+
   },
 }
 </script>
 <style lang="less" scoped>
+@import '~@/styles/mixin.less';
+@import '~@/styles/var.less';
+
 .home-container {
-  width: 400px;
-  height: 600px;
-  margin: 50px auto;
-  border: 1px solid;
+  background-color: @dark;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+
+
+  .carousel-container {
+
+    height: 100%;
+    width: 100%;
+    transition: 500ms;
+    li {
+
+      height: 100%;
+      width: 100%;
+    }
+
+  }
+
+
+
+
+
+
+
+
+
+  ul {
+    margin: 0;
+    list-style: none;
+    padding: 0;
+  }
+
+  .iconwrap {
+    .self-center();
+    @gap: 25px;
+    cursor: pointer;
+    transform: translateX(-50%);
+
+    &-up {
+      top: @gap;
+      animation: jump-up 2s infinite;
+    }
+
+    &-down {
+      bottom: @gap;
+      top: auto;
+      animation: jump-down 2s infinite;
+    }
+
+    @jump : 5px;
+
+    @keyframes jump-up {
+
+      0% {
+        transform: translate(-50%, @jump);
+      }
+
+
+      50% {
+        transform: translate(-50%, -@jump);
+      }
+
+      50% {
+        transform: translate(-50%, @jump);
+      }
+
+    }
+
+    @keyframes jump-down {
+
+      0% {
+        transform: translate(-50%, -@jump);
+      }
+
+
+      50% {
+        transform: translate(-50%, @jump);
+      }
+
+      50% {
+        transform: translate(-50%, -@jump);
+      }
+
+    }
+
+
+    .iconfont {
+      font-size: 30px;
+      color: @gray;
+    }
+
+
+
+
+  }
+
+  .indicator {
+    .self-center();
+    transform: translateY(-50%);
+    right: 20px;
+    left: auto;
+
+    li {
+      background-color: @dark;
+      margin-bottom: 10px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      border: 1px solid #fff;
+      box-sizing: border-box;
+      transition: 0.5s;
+
+      &.active {
+        background-color: #fff;
+      }
+    }
+  }
+
 }
 </style>
