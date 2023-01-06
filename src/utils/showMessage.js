@@ -35,9 +35,12 @@ export default function showMessage(options = {}) {
 
 
     // 容器需要 相对定位;
-    if (getComputedStyle(container).position == "static") {
-        container.style.position = "relative";
+    if(options.container){
+        if (getComputedStyle(container).position == "static") {
+            container.style.position = "relative";
+        }
     }
+    
 
     container.appendChild(div);
 
