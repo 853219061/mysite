@@ -1,5 +1,5 @@
 <template>
-  <div class="home-container" ref="container" @wheel="handelWheel">
+  <div  v-loading="isLoading"   class="home-container" ref="container" @wheel="handelWheel">
     <ul class="carousel-container" :style="{ marginTop: marginTop }" @transitionend="handleTransitionEnd">
       <li v-for="(item) in banners" :key="item.id">
         <CarouselItem :carouse="item"></CarouselItem>
@@ -18,17 +18,17 @@
       </li>
     </ul>
 
-    <Loading v-if="isLoading"></Loading>
+   
   </div>
 </template>
 <script>
 import CarouselItem from './carouselitem.vue';
 import { getBanner } from '@/api/banner';
 import Icon from '@/components/Icon.vue';
-import Loading from '@/components/Loading';
+
 export default {
   name: 'APP',
-  components: { CarouselItem, Icon, Loading },
+  components: { CarouselItem, Icon },
   data() {
     return {
       isLoading:true,
