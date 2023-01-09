@@ -1,11 +1,14 @@
 <template>
     <div>
-        <h1>blog</h1>
+        <Loading></Loading>
+        <button >切换显示隐藏</button>
     </div>
 </template>
 <script>
+import Loading from '@/components/Loading';
 export default {
     name: 'APP',
+    components:{Loading},
     data() {
         return {
         }

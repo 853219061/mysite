@@ -1,8 +1,8 @@
 <template>
-  <div class="home-container" ref="container">
-    <ul class="carousel-container" :style="{ marginTop: marginTop }">
+  <div class="home-container" ref="container" @wheel="handelWheel">
+    <ul class="carousel-container" :style="{ marginTop: marginTop }" @transitionend="handleTransitionEnd">
       <li v-for="(item) in banners" :key="item.id">
-        <CarouselItem></CarouselItem>
+        <CarouselItem :carouse="item"></CarouselItem>
       </li>
     </ul>
     <div v-show="index > 0" class="iconwrap iconwrap-up" @click="switchTo(index - 1)">
@@ -18,20 +18,24 @@
       </li>
     </ul>
 
+    <Loading v-if="isLoading"></Loading>
   </div>
 </template>
 <script>
 import CarouselItem from './carouselitem.vue';
 import { getBanner } from '@/api/banner';
 import Icon from '@/components/Icon.vue';
+import Loading from '@/components/Loading';
 export default {
   name: 'APP',
-  components: { CarouselItem, Icon },
+  components: { CarouselItem, Icon, Loading },
   data() {
     return {
+      isLoading:true,
       banners: [],
-      index: 1, // 当前显示的第几张
-      containerHeight: 0// 容器高度
+      index: 0, // 当前显示的第几张
+      containerHeight: 0,// 容器高度
+      switching: false
     }
   },
   computed: {
@@ -41,6 +45,35 @@ export default {
   },
   methods: {
 
+    handelWheel(event) {
+
+      if (this.switching || event.deltaY <= 5 && event.deltaY >= -5) { return }
+
+      this.switching = true;
+      if (event.deltaY < -5 && this.index > 0) {
+        this.index--;
+        console.log('上移', event)
+      }
+      else if (event.deltaY < -5 && this.index == 0) {
+        this.index = this.banners.length - 1;
+        console.log('上移', event)
+      }
+      else if (event.deltaY > 5 && this.index < this.banners.length - 1) {
+        this.index++;
+        console.log('下移', event)
+      }
+      else if (event.deltaY > 5 && this.index == this.banners.length - 1) {
+        this.index = 0;
+        console.log('下移', event)
+      }
+
+
+    },
+    handleTransitionEnd() {
+
+      this.switching = false;
+
+    },
     handleClick() {
       this.$showMessage({
         content: "123456",
@@ -53,18 +86,27 @@ export default {
     switchTo(i) {
       this.index = i;
     }
+    ,handleResize() {
+      console.log('handleResize');
+      this.containerHeight = this.$refs.container.clientHeight;
+    }
 
   },
   async created() {
     this.banners = await getBanner();
     console.log('获取数据', this.banners)
+    this.isLoading = false;
   },
   mounted() {
 
     // 容器高度获取
-    this.containerHeight = this.$refs.container.clientHeight
+    this.containerHeight = this.$refs.container.clientHeight;
+    window.addEventListener('resize', this.handleResize)
 
   },
+  destroyed() {
+    window.removeEventListener('resize', this.handleResize);
+  }
 }
 </script>
 <style lang="less" scoped>
@@ -72,18 +114,26 @@ export default {
 @import '~@/styles/var.less';
 
 .home-container {
-  background-color: @dark;
+  //background-color: @dark;
   height: 100%;
   width: 100%;
   position: relative;
   overflow: hidden;
 
 
+  // // 测试
+  // width: 500px;
+  // height:  300px;
+  // overflow: visible;
+  // border: 2px solid #000;
+  // margin: 10px auto;
+
   .carousel-container {
 
     height: 100%;
     width: 100%;
     transition: 500ms;
+
     li {
 
       height: 100%;

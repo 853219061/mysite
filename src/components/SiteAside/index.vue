@@ -4,7 +4,7 @@
             <Avatar :size="100" url="https://img1.baidu.com/it/u=3346088927,2424311409&fm=253&fmt=auto&app=120&f=JPEG?w=1280&h=800">
             </Avatar>
         </div>
-        <h1 class="title">龙傲天的小屋</h1>
+        <h1 class="title">qal的博客</h1>
         <Menu></Menu>
         <Contact></Contact>
         <p class="footer">粤ICP备18007845号</p>
